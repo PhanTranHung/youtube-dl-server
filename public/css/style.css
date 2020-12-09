@@ -1,0 +1,73 @@
+html {
+  overflow: auto;
+}
+
+body {
+  min-width: 414px;
+}
+
+.icon {
+  margin: 0 !important;
+}
+
+.list-item {
+  padding: 5px 0;
+}
+
+.list-item:not(:last-child) {
+  border-bottom: 1px solid #e2e2e2a8;
+}
+
+.is-hoverable > ul > li:hover {
+  background-color: #e0e0e0;
+}
+
+.is-center-text {
+  text-align: center;
+}
+
+.is-flex-basis-7 {
+  flex-basis: 70%;
+}
+
+.is-flex-basis-3 {
+  flex-basis: 30%;
+}
+
+@media screen and (min-width: 769px), print {
+  .hero.is-medium .hero-body {
+    padding: 9rem 1.5rem 2rem;
+  }
+}
+
+.is-max-width-700 {
+  max-width: 700px;
+  margin: auto;
+}
+
+.is-little-scare-x {
+  padding: 1rem 0;
+}
+
+.is-little-scare-left {
+  padding-left: 1rem;
+}
+
+.slider {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  display: flex;
+  flex-direction: row;
+  transition: all 0.4s ease-out;
+}
+
+.view-port-2 {
+  width: 200%;
+}
+
+.slide-item {
+  width: 100%;
+}

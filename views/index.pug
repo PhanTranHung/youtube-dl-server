@@ -1,0 +1,74 @@
+doctype html
+html(lang="en")
+	head
+		title=title
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+		link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.css")
+		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css")
+		link(rel="stylesheet", href="/css/style.css")
+	body
+		div(class="container is-max-widescreen")
+			section.hero.is-medium.is-bold
+				div.hero-body
+					div.is-max-width-700
+						form(id="form", action="/", method="POST")
+							.field
+								.control.is-flex
+									input.input.is-success(type="text", name="url", autocomplete="off", autofocus="autofocus", required="required", id="id_url", placeholder="Paste your link video here")
+									button.button.is-success(type="submit") 
+										= "Start"
+										span(class="icon")
+											i.fas.fa-arrow-right
+								p#url-help.help.has-text-danger.is-hidden Please enter the Youtube video link
+
+		div(class="container is-max-widescreen")
+			div.has-error.has-text-danger.is-max-width-700 An error was occur, please try again
+			div(class="box")
+				div(class="block")
+					div(class="tabs")
+						ul
+							li(class="is-active" data-pos="0")
+								a Video
+							li(data-pos="-100")
+								a Audio
+					div(class="block")
+						div(class="columns")
+							div(class="column is-two-thirds is-full-mobile")
+								div.slider
+									div#view-port.view-port-2.slide
+										div.slide-item
+											div(class="list is-hoverable")
+												ul#tab-video
+													- for(let x = 0; x < 5; x++ )
+														li(class="list-item")
+															div(class="display is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center")
+																div(class="is-flex-basis-7 is-little-scare-left") 
+
+
+																div(class="is-flex-basis-3 is-center-text") 
+																	a(class="button is-success is-outlined", href="https://r1---sn-8pxuuxa-q5qee.googlevideo.com/videoplayback?expire=1607290798&ei=TvvMX966L5r74-EP_5Wz4A8&ip=117.3.64.244&id=o-ANvNZ07jmo3IYMS7j2eC4bAtZb623ody2qd9_n--aIuz&itag=137&aitags=133%2C134%2C135%2C136%2C137%2C160%2C242%2C243%2C244%2C247%2C248%2C278%2C394%2C395%2C396%2C397%2C398%2C399&source=youtube&requiressl=yes&mh=Y3&mm=31%2C29&mn=sn-8pxuuxa-q5qee%2Csn-8pxuuxa-i5oz7&ms=au%2Crdu&mv=m&mvi=1&pl=20&initcwndbps=1461250&vprv=1&mime=video%2Fmp4&ns=2ZRioqSoX1eCc78YuJwHzOMF&gir=yes&clen=14981373&dur=100.240&lmt=1607127816033284&mt=1607268279&fvip=1&keepalive=yes&c=WEB&txp=5535434&n=Vd7_qCvfuXTzMlAp_&sparams=expire%2Cei%2Cip%2Cid%2Caitags%2Csource%2Crequiressl%2Cvprv%2Cmime%2Cns%2Cgir%2Cclen%2Cdur%2Clmt&sig=AOq0QJ8wRQIhAJXrwKLm71OEmvdBmheKySbUsbZkZcIEfGtGlkBZR36MAiBz48YEbfAm6taB7m4gURZVJqqMdOGReZkYrBD-2XD3ig%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=AG3C_xAwRQIgDF9EajzoByMT3vV5e0I23P_ZtMV2PqK0-vxW1fVr0pgCIQCF1PJN5m5LFNGN-HMMCciqw0nxy3FDQ7XeJVyOVB8I-A%3D%3D&ratebypass=yes") 
+																		span(class="icon")
+																			i.fas.fa-download
+																		= "Dowload"
+										div.slide-item
+											div(class="list is-hoverable")
+												ul#tab-audio
+													- for(let x = 0; x < 5; x++ )
+														li(class="list-item")
+															div(class="display is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center")
+																div(class="is-flex-basis-7 is-little-scare-left") 360.mp3 
+																div(class="is-flex-basis-3 is-center-text") 
+																	button(class="button is-success is-outlined") 
+																		span(class="icon")
+																			i.fas.fa-download
+																		= "Dowload"
+							div#thumbnail.column.is-full-mobile
+								div
+									figure.image
+										img(src="/img/boss.png")
+								div
+									div.is-little-scare-x
+										h4.subtitle.is-4 Subtitle 4
+		
+		script(src="/js/animation.js")
+		script(src="/js/events.js")

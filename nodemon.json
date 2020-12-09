@@ -1,0 +1,5 @@
+{
+  "delay": "5000",
+  "ignore": ["public/*"],
+  "env": {}
+}
