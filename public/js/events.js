@@ -1,10 +1,41 @@
 (() => {
-  const form = document.getElementById("form");
-  const urlHelp = document.getElementById("url-help");
-  const tabVideo = document.getElementById("tab-video");
-  const tabAudio = document.getElementById("tab-audio");
-  const thumbnail = document.getElementById("thumbnail");
+  const findById = (id) => document.getElementById(id);
+
+  const form = findById("form");
+  const urlHelp = findById("url-help");
+  const tabVideo = findById("tab-video");
+  const tabAudio = findById("tab-audio");
+  const thumbnail = findById("thumbnail");
+  const media = document.querySelectorAll("#media > *");
+  const convertBtn = findById("convert-btn");
+
+  convertBtn.isLoading = (type) =>
+    !!type
+      ? convertBtn.classList.add("is-loading")
+      : convertBtn.classList.remove("is-loading");
+
   const regex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+
+  const stageLoading = (type) => {
+    switch (type.toString().trim()) {
+      case "error":
+        showListMediaItem("convert-error");
+        convertBtn.isLoading(false);
+        break;
+
+      case "true":
+        showListMediaItem("convert-loading");
+        convertBtn.isLoading(true);
+
+        break;
+      case "false":
+        showListMediaItem("convert-success");
+        convertBtn.isLoading(false);
+
+      default:
+        break;
+    }
+  };
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
@@ -14,9 +45,9 @@
 
     if (regex.test(url)) {
       urlHelp.classList.add("is-hidden");
-
-      const respose = request({ url }, { method: "POST" });
-      respose.catch(console.log).then(render).catch(console.log);
+      stageLoading(true);
+      const response = request({ url }, { method: "POST" });
+      response.then(render).catch(() => stageLoading("error"));
     } else {
       urlHelp.classList.remove("is-hidden");
     }
@@ -26,7 +57,8 @@
     return new Promise((res, rej) => {
       const xrequest = new XMLHttpRequest();
       xrequest.addEventListener("load", (evt) => {
-        res(xrequest.responseText);
+        if (xrequest.status === 200) return res(xrequest.responseText);
+        return rej(xrequest.responseText);
       });
       xrequest.addEventListener("error", rej);
 
@@ -56,6 +88,8 @@
     renderListVideo(videoUrl);
     renderListAudio(audioUrl);
     renderThumbnail(odata);
+
+    stageLoading(false);
   };
 
   const renderListVideo = (data) => {
@@ -67,15 +101,26 @@
     for (let file of data) {
       const list = `<li class="list-item">
                       <div class="display is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center">
-                        <div class="is-flex-basis-7 is-little-scare-left"> ${
-                          file.format_note
-                        }.${file.ext} ${!file.asr ? "<b>(no audio)</b>" : ""}
+                        <div class="is-flex-grow-1 is-little-scare-left">
+                          <div class="columns is-mobile">
+                            <div class="column is-half-mobile is-three-fifths-tablet is-half-desktop is-no-wrap-text">
+                            ${file.format.split("-")[1].trim()} 
+                            ${!file.asr ? "<wbr>(<i>no audio</i>)<wbr>" : ""}
+                            </div>
+                            <div class="column">
+                            ${calSize(file.filesize)}
+                            </div>
+                            <div class="column">
+                            ${file.ext}
+                            </div>
+                          </div>
                         </div>
-                        <div class="is-flex-basis-3 is-center-text">
+                        <div class="is-little-scare-right">
                           <a class="button is-success is-outlined" href="${
                             file.url
-                          }"> 
-                            <span class="icon"><i class="fas fa-download"></i></span> Dowload
+                          }">
+                            <span class="icon"> <i class="fas fa-download"> </i> </span>
+                            Dowload
                           </a>
                         </div>
                       </div>
@@ -90,19 +135,22 @@
     for (let file of data) {
       const list = `<li class="list-item">
                       <div class="display is-flex is-flex-direction-row is-flex-wrap-wrap is-align-items-center">
-                        <div class="is-flex-basis-7 is-little-scare-left">${
-                          file.ext
-                        } ${
-        file.filesize
-          ? Math.round((file.filesize / 1048576) * 100) / 100 + "Mb"
-          : ""
-      }
+                        <div class="is-flex-grow-1 is-little-scare-left">
+                          <div class="columns is-mobile">
+                            <div class="column is-one-third">
+                            ${file.ext}
+                            </div>
+                            <div class="column is-one-third">
+                            ${calSize(file.filesize)}
+                            </div>
+                          </div>
                         </div>
-                        <div class="is-flex-basis-3 is-center-text">
+                        <div class="is-little-scare-right">
                           <a class="button is-success is-outlined" href="${
                             file.url
-                          }"> 
-                            <span class="icon"><i class="fas fa-download"></i></span> Dowload
+                          }">
+                            <span class="icon"><i class="fas fa-download"></i></span>
+                            Dowload
                           </a>
                         </div>
                       </div>
@@ -114,5 +162,23 @@
 
   const renderThumbnail = (data) => {
     thumbnail.innerHTML = `<div><figure class="image"><img src="${data.thumbnails[3].url}"></figure></div><div><div class="is-little-scare-x"><h4 class="subtitle is-4">${data.fulltitle}</h4></div></div>`;
+  };
+
+  const showListMediaItem = (id) => {
+    media.forEach((node) =>
+      id === node.id.trim()
+        ? node.classList.remove("is-hidden")
+        : node.classList.add("is-hidden")
+    );
+  };
+
+  const calSize = (bytes) => {
+    if (bytes) {
+      const dataSize = Math.round((bytes / 1048576) * 100) / 100;
+      if (dataSize > 900)
+        return Math.round((dataSize / 1024) * 100) / 100 + "GB";
+      return dataSize + "MB";
+    }
+    return "Unknow";
   };
 })();

@@ -47,7 +47,7 @@ const init = async () => {
           const ls = cp.spawn(`youtube-dl`, ["-j", "--skip-download", url]);
           ls.stdout.on("data", (data) => {
             const response = h.response(data);
-            response.type("application/json");
+            response.type("application/json");  
             response.charset("utf-8");
 
             res(response);
@@ -88,10 +88,6 @@ const init = async () => {
 
   await server.start();
   console.log("Server running on %s", server.info.uri);
-
-
-
-  
 };
 
 process.on("unhandledRejection", (err) => {

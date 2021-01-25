@@ -26,6 +26,13 @@ body {
   text-align: center;
 }
 
+.hero-body-x {
+  flex-grow: 1;
+  flex-shrink: 0;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
 .is-flex-basis-7 {
   flex-basis: 70%;
 }
@@ -45,12 +52,25 @@ body {
   margin: auto;
 }
 
+.is-max-width-50 {
+  max-width: 50%;
+  margin: auto;
+}
+
 .is-little-scare-x {
   padding: 1rem 0;
 }
 
 .is-little-scare-left {
-  padding-left: 1rem;
+  margin-left: 5px;
+}
+
+.is-little-scare-right {
+  margin-right: 5px;
+}
+
+.is-no-wrap-text {
+  white-space: nowrap;
 }
 
 .slider {
@@ -70,4 +90,26 @@ body {
 
 .slide-item {
   width: 100%;
+}
+
+.scrollable {
+  overflow: hidden;
+}
+
+.scrollbar-style::-webkit-scrollbar {
+  width: 2px;
+  background-color: #e2e2e2;
+}
+
+.scrollbar-style::-webkit-scrollbar-thumb {
+  background-color: #48c774;
+}
+
+.scrollable-y {
+  overflow-y: scroll;
+}
+
+.scrollable-y-400 {
+  overflow-y: scroll;
+  max-height: 400px;
 }
